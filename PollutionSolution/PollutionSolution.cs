@@ -5,8 +5,7 @@ using System.Diagnostics;
 
 namespace PollutionSolution
 {
-    // TODO: better overall organization - i'm not sure how others did this, it only seems to work correctly if it's all in the one class...
-    // TODO: useful logging
+    // TODO: need to save/load settings from file
     // TODO: ansel testing
     // TODO: license
     // TODO: README
@@ -36,13 +35,13 @@ namespace PollutionSolution
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            // TODO: need to save/load from file
             UIHelperBase settingsGroup = helper.AddGroup("Remove");
             settingsGroup.AddCheckbox("Noise Pollution", true, (selected) => { removeNoisePollution = selected; });
             settingsGroup.AddCheckbox("Ground Pollution", true, (selected) => { removeGroundPollution = selected; });
             settingsGroup.AddCheckbox("Water Pollution", true, (selected) => { removeWaterPollution = selected; });
         }
 
+        // This must remain public
         public class PollutionLogic : ThreadingExtensionBase
         {
             private readonly Stopwatch timer = new Stopwatch();
