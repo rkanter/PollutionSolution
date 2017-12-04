@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 namespace PollutionSolution
 {
-    // TODO: need to save/load settings from file
     // TODO: ansel testing
     // TODO: license
     // TODO: README
@@ -18,10 +17,7 @@ namespace PollutionSolution
         // This didn't have the same problem as the noise, but it's safer to stay a bit away from the max int
         private const int pollutionAmount = Int32.MaxValue / 5;
 
-        // TODO: is there a better way to do this available to both classes than by making it static?
-        private static bool removeNoisePollution = true;
-        private static bool removeGroundPollution = true;
-        private static bool removeWaterPollution = true;
+        private static PollutionSolutionConfiguration config = Configuration<PollutionSolutionConfiguration>.Load();
 
         public string Name
         {
@@ -36,9 +32,18 @@ namespace PollutionSolution
         public void OnSettingsUI(UIHelperBase helper)
         {
             UIHelperBase settingsGroup = helper.AddGroup("Remove");
-            settingsGroup.AddCheckbox("Noise Pollution", true, (selected) => { removeNoisePollution = selected; });
-            settingsGroup.AddCheckbox("Ground Pollution", true, (selected) => { removeGroundPollution = selected; });
-            settingsGroup.AddCheckbox("Water Pollution", true, (selected) => { removeWaterPollution = selected; });
+            settingsGroup.AddCheckbox("Noise Pollution", config.RemoveNoisePollution, (selected) => {
+                config.RemoveNoisePollution = selected;
+                Configuration<PollutionSolutionConfiguration>.Save();
+            });
+            settingsGroup.AddCheckbox("Ground Pollution", config.RemoveGroundPollution, (selected) => {
+                config.RemoveGroundPollution = selected;
+                Configuration<PollutionSolutionConfiguration>.Save();
+            });
+            settingsGroup.AddCheckbox("Water Pollution", config.RemoveWaterPollution, (selected) => {
+                config.RemoveWaterPollution = selected;
+                Configuration<PollutionSolutionConfiguration>.Save();
+            });
         }
 
         // This must remain public
@@ -66,15 +71,15 @@ namespace PollutionSolution
                     // Don't do things faster than once per second
                     timer.ElapsedMilliseconds > 1000)
                 {
-                    if (removeNoisePollution)
+                    if (config.RemoveNoisePollution)
                     {
                         ImmaterialResourceManager.instance.AddResource(ImmaterialResourceManager.Resource.NoisePollution, noiseAmount);
                     }
-                    if (removeGroundPollution)
+                    if (config.RemoveGroundPollution)
                     {
                         Singleton<NaturalResourceManager>.instance.AddPollutionDisposeRate(pollutionAmount);
                     }
-                    if (removeWaterPollution)
+                    if (config.RemoveWaterPollution)
                     {
                         Singleton<TerrainManager>.instance.WaterSimulation.AddPollutionDisposeRate(pollutionAmount);
                     }

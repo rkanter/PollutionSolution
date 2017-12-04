@@ -50,6 +50,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PollutionSolutionConfiguration.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="PollutionSolution.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
