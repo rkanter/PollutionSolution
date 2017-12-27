@@ -1,8 +1,10 @@
 ﻿Pollution Solution - A Cities: Skylines Mod
 ===========================================
 
-A simple mod that allows you to enable/disable Noise, Ground, and Water pollution.  
+A simple mod for [Cities: Skylines](http://store.steampowered.com/app/255710/Cities_Skylines/) that allows you to enable/disable Noise, Ground, and Water pollution.  
 See the options panel to toggle each type of pollution individually.
+
+You can find the mod on the Steam Workshop [here](TODO).
 
 Noise Pollution
 ---

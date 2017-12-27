@@ -5,9 +5,6 @@ using System.Diagnostics;
 
 namespace PollutionSolution
 {
-    // TODO: ansel testing
-    // TODO: license
-    // TODO: README
     public class PollutionSolution : IUserMod
     {
         // It seems that if you make this too negative, it's less effective
