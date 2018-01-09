@@ -8,12 +8,16 @@ You can find the mod on the Steam Workshop [here](TODO).
 
 Noise Pollution
 ---
-![alt text](media/noise_600.png "Noise Pollution")
+![alt text](media/noise.png "Noise Pollution")
 
 Ground Pollution
 ---
-![alt text](media/ground_600.png "Ground Pollution")
+![alt text](media/ground.png "Ground Pollution")
 
 Water Pollution
 ---
-![alt text](media/water_600.png "Water Pollution")
+![alt text](media/water.png "Water Pollution")
+
+Settings
+---
+![alt text](media/settings.png "Settings Pollution")
