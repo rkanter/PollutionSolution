@@ -33,3 +33,11 @@ Settings
 - Settings are live, so you can toggle them while a city is running.
 
 ![alt text](media/settings.png "Settings Pollution")
+
+Changelog
+---
+**1.0.1**
+- Fixed noise pollution removal not working correctly when the game is run at higher than normal speeds (e.g. due to a mod)
+
+**1.0.0**
+- Initial release
