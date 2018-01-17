@@ -22,7 +22,7 @@ Noise Pollution
 
 Water Pollution
 ---
-- Disabling Water Pollution takes effect after a few seconds, bit it will take some time for the water to clear up.
+- Disabling Water Pollution takes effect after a few seconds, but it will take some time for the water to clear up.
 - Re-enabling Water Pollution takes effect after a few seconds, but it will take some time for the water to become polluted again.
 
 ![alt text](media/water.png "Water Pollution")
