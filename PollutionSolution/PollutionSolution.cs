@@ -1,18 +1,23 @@
 ﻿using ColossalFramework;
 using ICities;
 using System;
-using System.Diagnostics;
 
 namespace PollutionSolution
 {
     public class PollutionSolution : IUserMod
     {
-        // It seems that if you make this too negative, it's less effective
+        // It seems that if you make this too negative (i.e. Int32), it's less effective
         // (there's probably some underflow somewhere in that case)
-        private const int noiseAmount = Int32.MinValue / 5;
+        // Let's just use Int16.MinValue as a relatively safe number
+        private const int noiseAmount = Int16.MinValue;
 
-        // This didn't have the same problem as the noise, but it's safer to stay a bit away from the max int
-        private const int pollutionAmount = Int32.MaxValue / 5;
+        // This didn't have the same problem as the noise, but it's safer to stay away from the max Int32
+        private const int pollutionAmount = Int16.MaxValue;
+
+        // How frequently to remove the pollution, in frames
+        // The game will process a different number of frames per wall time depending on the game speed and the ability of the computer
+        // At 1x speed, there are 60 frames per second, so 60 here should be about once per "in game" second regardless of speed
+        private const uint FRAME_INDEX_THRESHOLD = 60;
 
         private static PollutionSolutionConfiguration config = Configuration<PollutionSolutionConfiguration>.Load();
 
@@ -46,27 +51,25 @@ namespace PollutionSolution
         // This must remain public
         public class PollutionLogic : ThreadingExtensionBase
         {
-            private readonly Stopwatch timer = new Stopwatch();
+            private uint previousUpdatedFrameIndex = 0;
 
             public override void OnCreated(IThreading threading)
             {
                 base.OnCreated(threading);
-                timer.Start();
             }
 
             public override void OnReleased()
             {
-                timer.Reset();
                 base.OnReleased();
             }
             public override void OnAfterSimulationFrame()
             {
-                // Probably not in a normal game type if the district manager doesn't actually exist.
+                // Probably not in a normal game type if the district manager doesn't actually exist
                 if (Singleton<DistrictManager>.exists &&
                     // No need to do anything if we're paused
                     !SimulationManager.instance.SimulationPaused &&
-                    // Don't do things faster than once per second
-                    timer.ElapsedMilliseconds > 1000)
+                    // Don't do things faster than once every FRAME_INDEX_THRESHOLD
+                    SimulationManager.instance.m_currentFrameIndex - previousUpdatedFrameIndex > FRAME_INDEX_THRESHOLD)
                 {
                     if (config.RemoveNoisePollution)
                     {
@@ -80,9 +83,7 @@ namespace PollutionSolution
                     {
                         Singleton<TerrainManager>.instance.WaterSimulation.AddPollutionDisposeRate(pollutionAmount);
                     }
-
-                    timer.Reset();
-                    timer.Start();
+                    previousUpdatedFrameIndex = SimulationManager.instance.m_currentFrameIndex;
                 }
 
                 base.OnAfterSimulationTick();
