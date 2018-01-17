@@ -7,18 +7,18 @@ Install
 ---
 Subscribe to the mod on the Steam Workshop [here](http://steamcommunity.com/sharedfiles/filedetails/?id=1263262833).
 
-Noise Pollution
----
-- Disabling and Re-enabling Noise Pollution takes effect after a few seconds.  
-
-![alt text](media/noise.png "Noise Pollution")
-
 Ground Pollution
 ---
 - Disabling Ground Pollution takes effect after a few seconds.  
 - Re-enabling Ground Pollution will take some time for the pollution to build up.
 
 ![alt text](media/ground.png "Ground Pollution")
+
+Noise Pollution
+---
+- Disabling and Re-enabling Noise Pollution takes effect after a few seconds.  
+
+![alt text](media/noise.png "Noise Pollution")
 
 Water Pollution
 ---
