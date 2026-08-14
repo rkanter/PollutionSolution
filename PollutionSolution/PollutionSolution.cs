@@ -1,4 +1,4 @@
-﻿using ColossalFramework;
+using ColossalFramework;
 using ICities;
 using System;
 
@@ -21,72 +21,70 @@ namespace PollutionSolution
 
         private static PollutionSolutionConfiguration config = Configuration<PollutionSolutionConfiguration>.Load();
 
-        public string Name
-        {
-            get { return "Pollution Solution"; }
-        }
+        public string Name => "Pollution Solution";
 
-        public string Description
-        {
-            get { return "Enable/disable Noise, Ground, and Water pollution (by ShadowLink721)"; }
-        }
+        public string Description => "Enable/Disable Noise, Ground, and Water pollution (by ShadowLink721)";
 
         public void OnSettingsUI(UIHelperBase helper)
         {
             UIHelperBase settingsGroup = helper.AddGroup("Remove");
-            settingsGroup.AddCheckbox("Noise Pollution", config.RemoveNoisePollution, (selected) => {
+            settingsGroup.AddCheckbox("Noise Pollution", config.RemoveNoisePollution, (selected) =>
+            {
                 config.RemoveNoisePollution = selected;
                 Configuration<PollutionSolutionConfiguration>.Save();
             });
-            settingsGroup.AddCheckbox("Ground Pollution", config.RemoveGroundPollution, (selected) => {
+            settingsGroup.AddCheckbox("Ground Pollution", config.RemoveGroundPollution, (selected) =>
+            {
                 config.RemoveGroundPollution = selected;
                 Configuration<PollutionSolutionConfiguration>.Save();
             });
-            settingsGroup.AddCheckbox("Water Pollution", config.RemoveWaterPollution, (selected) => {
+            settingsGroup.AddCheckbox("Water Pollution", config.RemoveWaterPollution, (selected) =>
+            {
                 config.RemoveWaterPollution = selected;
                 Configuration<PollutionSolutionConfiguration>.Save();
             });
         }
 
-        // This must remain public
         public class PollutionLogic : ThreadingExtensionBase
         {
             private uint previousUpdatedFrameIndex = 0;
 
-            public override void OnCreated(IThreading threading)
-            {
-                base.OnCreated(threading);
-            }
-
-            public override void OnReleased()
-            {
-                base.OnReleased();
-            }
             public override void OnAfterSimulationFrame()
             {
-                // Probably not in a normal game type if the district manager doesn't actually exist
-                if (Singleton<DistrictManager>.exists &&
-                    // No need to do anything if we're paused
-                    !SimulationManager.instance.SimulationPaused &&
-                    // Don't do things faster than once every FRAME_INDEX_THRESHOLD
-                    SimulationManager.instance.m_currentFrameIndex - previousUpdatedFrameIndex > FRAME_INDEX_THRESHOLD)
+                // Ensure we are in actual city gameplay (not an editor or main menu)
+                if (!Singleton<ToolManager>.exists ||
+                    ToolManager.instance.m_properties == null ||
+                    (ToolManager.instance.m_properties.m_mode & ItemClass.Availability.Game) == ItemClass.Availability.None)
                 {
-                    if (config.RemoveNoisePollution)
+                    return;
+                }
+
+                // Ensure simulation manager exists, is done loading, and is not paused
+                if (!Singleton<SimulationManager>.exists ||
+                    !Singleton<LoadingManager>.exists ||
+                    !LoadingManager.instance.m_loadingComplete ||
+                    SimulationManager.instance.SimulationPaused)
+                {
+                    return;
+                }
+
+                // Don't do things faster than once every FRAME_INDEX_THRESHOLD
+                if (SimulationManager.instance.m_currentFrameIndex - previousUpdatedFrameIndex > FRAME_INDEX_THRESHOLD)
+                {
+                    if (config.RemoveNoisePollution && Singleton<ImmaterialResourceManager>.exists)
                     {
                         ImmaterialResourceManager.instance.AddResource(ImmaterialResourceManager.Resource.NoisePollution, NOISE_AMOUNT);
                     }
-                    if (config.RemoveGroundPollution)
+                    if (config.RemoveGroundPollution && Singleton<NaturalResourceManager>.exists)
                     {
-                        Singleton<NaturalResourceManager>.instance.AddPollutionDisposeRate(POLLUTION_AMOUNT);
+                        NaturalResourceManager.instance.AddPollutionDisposeRate(POLLUTION_AMOUNT);
                     }
-                    if (config.RemoveWaterPollution)
+                    if (config.RemoveWaterPollution && Singleton<TerrainManager>.exists && TerrainManager.instance.WaterSimulation != null)
                     {
-                        Singleton<TerrainManager>.instance.WaterSimulation.AddPollutionDisposeRate(POLLUTION_AMOUNT);
+                        TerrainManager.instance.WaterSimulation.AddPollutionDisposeRate(POLLUTION_AMOUNT);
                     }
                     previousUpdatedFrameIndex = SimulationManager.instance.m_currentFrameIndex;
                 }
-
-                base.OnAfterSimulationTick();
             }
         }
     }
