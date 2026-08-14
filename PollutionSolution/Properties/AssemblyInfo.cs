@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PollutionSolution")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Enable/Disable Noise, Ground, and Water pollution (by ShadowLink721)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Robert Kanter (ShadowLink721)")]
 [assembly: AssemblyProduct("PollutionSolution")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © Robert Kanter (ShadowLink721) 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
