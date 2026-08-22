@@ -36,8 +36,14 @@ Settings
 
 Changelog
 ---
-**1.0.1**
+**1.0.2** -- Aug 22, 2026
+- Added more/better guards against weird states, null checks, etc
+- Removes unnecessary overrides and super calls
+- Some style modernization/consistency
+- Misc AssemblyInfo tweaks
+
+**1.0.1** -- Jan 16, 2018
 - Fixed noise pollution removal not working correctly when the game is run at higher than normal speeds (e.g. due to a mod)
 
-**1.0.0**
+**1.0.0** -- Jan 8, 2018
 - Initial release
