@@ -29,7 +29,7 @@ Water Pollution
 
 Settings
 ---
-- You can enable toggle each type of pollution individually.  
+- You can toggle each type of pollution individually.
 - Settings are live, so you can toggle them while a city is running.
 
 ![alt text](media/settings.png "Settings Pollution")
